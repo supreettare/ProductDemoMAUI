@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="DemoAppOne.Views.ProductListView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:resources="clr-namespace:DemoAppOne.Resources.AppLanguage"
+    x:Name="dashboardPage"
+    BackgroundColor="{AppThemeBinding Light={StaticResource MasterPageBackgroundColor},
+                                      Dark={StaticResource MasterPageBackgroundColor}}"
+    Shell.BackgroundColor="{AppThemeBinding Light={StaticResource Primary},
+                                            Dark={StaticResource Primary}}">
+    <Shell.TitleView>
+        <Label Style="{StaticResource NavBarTitleLabelStyle}" Text="{x:Static resources:StringResources.Products}" />
+    </Shell.TitleView>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            Command="{Binding AddProductCommand}"
+            IconImageSource="addicon.png"
+            Text="{x:Static resources:StringResources.AddProduct}" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid RowDefinitions="Auto,*">
+            <Label
+                IsVisible="{Binding IsNoProductLabelVisible}"
+                Style="{StaticResource NoProductsLableStyle}"
+                Text="{x:Static resources:StringResources.NoProductsAvailable}" />
+            <ScrollView Grid.Row="1" VerticalOptions="FillAndExpand">
+                <CollectionView
+                    x:Name="productsCollectionView"
+                    ItemsSource="{Binding Products}"
+                    SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"
+                    SelectionChangedCommand="{Binding EditProductCommand, Mode=TwoWay}"
+                    SelectionChangedCommandParameter="{Binding Source={x:Reference productsCollectionView}, Path=SelectedItem}"
+                    SelectionMode="Single">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                Margin="10"
+                                Padding="10"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource White},
+                                                                  Dark={StaticResource White}}"
+                                Stroke="{AppThemeBinding Light={StaticResource White},
+                                                         Dark={StaticResource White}}"
+                                Style="{StaticResource EntryLabelBorderStyle}">
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                    <Image Source="{Binding ProductImage}" Style="{StaticResource ProductImageStyle}" />
+                                    <VerticalStackLayout Grid.Column="2" HorizontalOptions="FillAndExpand">
+                                        <Label Style="{StaticResource HeadingLabelStyle}" Text="{Binding Name}" />
+                                        <Label
+                                            FontSize="{StaticResource SmallestFontSize}"
+                                            MaxLines="3"
+                                            Text="{Binding Description}" />
+                                        <Grid ColumnDefinitions="*,*" Margin="0, 10, 0, 0">
+                                            <Label
+                                                Style="{StaticResource DetailLabelStyle}"
+                                                Text="{Binding Cost, StringFormat='${0:F2}'}"
+                                                TextColor="{StaticResource Primary}" />
+                                            <Label Grid.Column="1" HorizontalTextAlignment="End">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="{x:Static resources:StringResources.Quantity}" />
+                                                        <Span Text=": " />
+                                                        <Span FontSize="{StaticResource SmallestFontSize}" Text="{Binding Quantity}" />
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                        </Grid>
+                                    </VerticalStackLayout>
+                                </Grid>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup Name="CommonStates">
+                                        <VisualState Name="Normal">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="{StaticResource White}" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState Name="Selected">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="{StaticResource Gray200}" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

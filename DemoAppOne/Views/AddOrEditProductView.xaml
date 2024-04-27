@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="DemoAppOne.Views.AddOrEditProductView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:DemoAppOne.Controls"
+    xmlns:resources="clr-namespace:DemoAppOne.Resources.AppLanguage"
+    BackgroundColor="{AppThemeBinding Light={StaticResource White},
+                                      Dark={StaticResource White}}"
+    Shell.BackgroundColor="{AppThemeBinding Light={StaticResource Primary},
+                                            Dark={StaticResource Primary}}">
+    <Shell.TitleView>
+        <Grid>
+            <Label Style="{StaticResource NavBarTitleLabelStyle}" Text="{Binding Title}" />
+            <Button
+                Margin="10"
+                BackgroundColor="{AppThemeBinding Light={StaticResource Primary},
+                                                  Dark={StaticResource Primary}}"
+                Command="{Binding CreateOrUpdateProductCommand}"
+                FontAttributes="Bold"
+                FontSize="{StaticResource LargeFontSize}"
+                HorizontalOptions="End"
+                IsVisible="{Binding IsSaveButtonVisible}"
+                Text="{x:Static resources:StringResources.Save}" />
+        </Grid>
+    </Shell.TitleView>
+    <Grid Margin="15" RowDefinitions="3*,*">
+        <StackLayout Spacing="5">
+            <Grid ColumnDefinitions="*,Auto">
+                <Border
+                    HorizontalOptions="Center"
+                    Stroke="{AppThemeBinding Light={StaticResource Gray400},
+                                             Dark={StaticResource Gray400}}"
+                    StrokeThickness="1"
+                    Style="{StaticResource EntryLabelBorderStyle}">
+                    <Image Source="{Binding ProductModel.ProductImage}" Style="{StaticResource ProductImageStyle}" />
+                </Border>
+                <Border
+                    Grid.Row="1"
+                    Margin="0,0,-95,0"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Primary},
+                                                      Dark={StaticResource Primary}}"
+                    HeightRequest="35"
+                    HorizontalOptions="CenterAndExpand"
+                    Stroke="{AppThemeBinding Light={StaticResource Primary},
+                                             Dark={StaticResource Primary}}"
+                    VerticalOptions="End"
+                    WidthRequest="35">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
+                    <Image Source="editprofileicon.png" WidthRequest="15" />
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ChangeProductImageCommand}" NumberOfTapsRequired="1" />
+                    </Border.GestureRecognizers>
+                </Border>
+            </Grid>
+            <Label Style="{StaticResource HeaderTextLabelStyle}" Text="{x:Static resources:StringResources.Name}" />
+            <Border Style="{StaticResource EntryLabelBorderStyle}">
+                <controls:BorderLessEntry
+                    Placeholder="{x:Static resources:StringResources.NamePlaceholder}"
+                    Style="{StaticResource EntryStyle}"
+                    Text="{Binding ProductModel.Name}" />
+            </Border>
+            <Label Style="{StaticResource HeaderTextLabelStyle}" Text="{x:Static resources:StringResources.Cost}" />
+            <Border Style="{StaticResource EntryLabelBorderStyle}">
+                <controls:BorderLessEntry
+                    Placeholder="{x:Static resources:StringResources.CostPlaceholder}"
+                    Style="{StaticResource EntryStyle}"
+                    Text="{Binding ProductModel.Cost}" />
+            </Border>
+            <Label Style="{StaticResource HeaderTextLabelStyle}" Text="{x:Static resources:StringResources.Quantity}" />
+            <Border Style="{StaticResource EntryLabelBorderStyle}">
+                <controls:BorderLessEntry
+                    Placeholder="{x:Static resources:StringResources.QuantityPlaceholder}"
+                    Style="{StaticResource EntryStyle}"
+                    Text="{Binding ProductModel.Quantity}" />
+            </Border>
+            <Label Style="{StaticResource HeaderTextLabelStyle}" Text="{x:Static resources:StringResources.Description}" />
+            <Border Style="{StaticResource EntryLabelBorderStyle}">
+                <controls:BorderLessEntry
+                    Placeholder="{x:Static resources:StringResources.DescriptionPlaceholder}"
+                    Style="{StaticResource EntryStyle}"
+                    Text="{Binding ProductModel.Description}" />
+            </Border>
+
+        </StackLayout>
+        <Grid
+            Grid.Row="1"
+            Margin="0,10"
+            ColumnDefinitions="*,*"
+            ColumnSpacing="10"
+            VerticalOptions="Center">
+            <Button
+                Command="{Binding CreateOrUpdateProductCommand}"
+                IsVisible="{Binding IsUpdateButtonVisible}"
+                Text="{x:Static resources:StringResources.Update}" />
+            <Button
+                Grid.Column="1"
+                BackgroundColor="{AppThemeBinding Dark={StaticResource DangerColor},
+                                                  Light={StaticResource DangerColor}}"
+                Command="{Binding DeleteProductCommand}"
+                IsVisible="{Binding IsDeleteButtonVisible}"
+                Text="{x:Static resources:StringResources.Delete}" />
+        </Grid>
+        <VerticalStackLayout
+            Grid.Row="1"
+            IsVisible="{Binding IsNewProduct}"
+            Spacing="10">
+            <Label HorizontalOptions="Center" Text="{x:Static resources:StringResources.OR}" />
+            <Label
+                HorizontalOptions="Center"
+                Text="{x:Static resources:StringResources.ChooseProductsFromOurStore}"
+                TextColor="Blue"
+                TextDecorations="Underline">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GetRemoteProductsCommand}" />
+                </Label.GestureRecognizers>
+            </Label>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>
